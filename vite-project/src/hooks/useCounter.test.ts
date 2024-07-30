@@ -1,8 +1,9 @@
 // write test for useCounter.ts
 
 import { expect, it, describe } from "vitest";
-import { renderHook, act } from '@testing-library/react-hooks';
+import {renderHook, act} from '@testing-library/react'
 import useCounter from './useCounter';
+
 
 describe('should increment counter', () => {
     it('should return a default search term and original items', () => { 
