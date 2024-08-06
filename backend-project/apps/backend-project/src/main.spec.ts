@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 jest.mock('@nestjs/core', () => ({
@@ -7,6 +8,20 @@ jest.mock('@nestjs/core', () => ({
       listen: jest.fn().mockResolvedValue(undefined),
     }),
   },
+}));
+
+jest.mock('@nestjs/swagger', () => ({
+  SwaggerModule: {
+    createDocument: jest.fn().mockReturnValue({}),
+    setup: jest.fn(),
+  },
+  DocumentBuilder: jest.fn().mockImplementation(() => ({
+    setTitle: jest.fn().mockReturnThis(),
+    setDescription: jest.fn().mockReturnThis(),
+    setVersion: jest.fn().mockReturnThis(),
+    addTag: jest.fn().mockReturnThis(),
+    build: jest.fn().mockReturnValue({}),
+  })),
 }));
 
 describe('Bootstrap', () => {
@@ -21,5 +36,14 @@ describe('Bootstrap', () => {
 
     expect(NestFactory.create).toHaveBeenCalledWith(AppModule);
     expect(mockApp.listen).toHaveBeenCalledWith(3000);
+    expect(SwaggerModule.createDocument).toHaveBeenCalledWith(
+      mockApp,
+      expect.any(Object),
+    );
+    expect(SwaggerModule.setup).toHaveBeenCalledWith(
+      'api',
+      mockApp,
+      expect.any(Object),
+    );
   });
 });
