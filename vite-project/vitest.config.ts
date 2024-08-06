@@ -11,7 +11,7 @@ export default mergeConfig(viteConfig, defineConfig({
     ],
     coverage: {
         reporter: ['text', 'lcov'],
-        exclude: [...coverageConfigDefaults.exclude, 'src/main.tsx', 'e2e-test/**/*', 'playwright.config.ts'],
+        exclude: [...coverageConfigDefaults.exclude, 'src/main.tsx', 'e2e-test/**/*', 'playwright.config.ts', 'swagger-typescript-api.config.ts'],
     },
     globals: true,
     environment: 'jsdom',
