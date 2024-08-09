@@ -17,6 +17,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/mongo-prisma": [
+        "libs/mongo-prisma/src"
+      ],
+      "@app/mongo-prisma/*": [
+        "libs/mongo-prisma/src/*"
+      ]
+    }
   }
 }

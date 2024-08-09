@@ -11,7 +11,7 @@ export class AppController {
   @Get(':name')
   @ApiOkResponse({ description: 'Hello World!', type: String })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  getHello(@Param() helloParamDto: HelloParamDto): string {
+  async getHello(@Param() helloParamDto: HelloParamDto): Promise<string> {
     return this.appService.getHello(helloParamDto);
   }
 }
