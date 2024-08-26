@@ -23,6 +23,9 @@ jobs:
         working-directory: ./backend-project
         run: npm run test:cov
 
+      - name: Test Cat Coverage
+        run: cat ${{ github.workspace }}/backend-project/coverage/coverage-final.json
+
       - name: Verify Code Coverage
         uses: namnh240795/verify-coverage-action@v1.0.1
         with:
