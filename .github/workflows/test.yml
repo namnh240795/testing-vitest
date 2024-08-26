@@ -39,4 +39,4 @@ jobs:
       
       - name: if coverage is more than 90%
         if: steps.verify-coverage.outputs.pass == 'true'
-        run: exit 1
+        run: echo "Coverage is more than 90%"
