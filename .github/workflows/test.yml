@@ -15,14 +15,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-    
-      - name: Move to backend project
-        run: cd backend-project/ && ls
-
+        
       - name: Setup Continuous integration
         uses: ./.github/actions
 
-      - name: Lint Application
+      - name: Test Coverage
+        working-directory: ./backend-project
         run: npm run test:cov
 
       - name: Save Coverage To Outputs
