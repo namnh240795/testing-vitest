@@ -26,7 +26,10 @@ jobs:
       - name: Save Coverage To Outputs
         id: coverage
         working-directory: ./backend-project
-        run: echo "jsonSummary=$(cat coverage/coverage-final.json)" >> $GITHUB_ENV
+        run: 
+            echo $GITHUB_WORKSPACE
+            echo $GITHUB_WORKSPACE/jsonSummary.json
+            echo "jsonSummaryFile=$GITHUB_WORKSPACE/jsonSummary.json" >> $GITHUB_ENV
 
       - name: Verify Code Coverage
         uses: namnh240795/verify-coverage-action@v1.0.1
