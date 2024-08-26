@@ -29,5 +29,6 @@ runs:
           ${{ runner.os }}-pnpm-store-
 
     - name: Install dependencies
+      working-directory: ./backend-project
       run: pnpm install
       shell: bash
