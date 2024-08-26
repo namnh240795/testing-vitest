@@ -27,8 +27,16 @@ jobs:
         run: cat ${{ github.workspace }}/backend-project/coverage/coverage-final.json
 
       - name: Verify Code Coverage
+        id: verify-coverage
         uses: namnh240795/verify-coverage-action@v1.0.4
         with:
             threshhold: 90
             jsonSummary: ${{ github.workspace }}/backend-project/coverage/coverage-final.json
-
+     
+      - name: Notify failed
+        if: steps.verify-coverage.outputs.pass != 'true'
+        run: echo "Coverage is less than 90%"
+      
+      - name: if coverage is more than 90%
+        if: steps.verify-coverage.outputs.pass == 'true'
+        run: exit 1
