@@ -23,16 +23,9 @@ jobs:
         working-directory: ./backend-project
         run: npm run test:cov
 
-      - name: Save Coverage To Outputs
-        id: coverage
-        working-directory: ./backend-project
-        run: 
-            echo $GITHUB_WORKSPACE
-            echo $GITHUB_WORKSPACE/jsonSummary.json
-            echo "jsonSummaryFile=$GITHUB_WORKSPACE/jsonSummary.json" >> $GITHUB_ENV
-
       - name: Verify Code Coverage
         uses: namnh240795/verify-coverage-action@v1.0.1
         with:
             threshhold: 90
-            jsonSummary: ${{ steps.coverage.outputs.jsonSummary }}
+            jsonSummary: ${{ github.workspace }}/backend-project/coverage/coverage-final.json
+
