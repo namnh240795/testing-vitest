@@ -1,22 +1,35 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { AppModule } from './app.module';
-// import { AppController } from './app.controller';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from './app.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { MongoPrismaModule } from '@app/mongo-prisma';
 
 describe('AppModule', () => {
-  // let appModule: TestingModule;
+  let module: TestingModule;
 
-  // beforeAll(async () => {
-  //   appModule = await Test.createTestingModule({
-  //     imports: [AppModule],
-  //   }).compile();
-  // });
-
-  it('should be defined', () => {
-    expect(1).toBeDefined();
+  beforeEach(async () => {
+    module = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
   });
 
-  // it('should contain AppController', () => {
-  //   const appController = appModule.get<AppController>(AppController);
-  //   expect(appController).toBeDefined();
-  // });
+  it('should be defined', () => {
+    const appModule = module.get<AppModule>(AppModule);
+    expect(appModule).toBeDefined();
+  });
+
+  it('should import MongoPrismaModule', () => {
+    const mongoPrismaModule = module.get<MongoPrismaModule>(MongoPrismaModule);
+    expect(mongoPrismaModule).toBeDefined();
+  });
+
+  it('should have AppController', () => {
+    const appController = module.get<AppController>(AppController);
+    expect(appController).toBeDefined();
+  });
+
+  it('should have AppService', () => {
+    const appService = module.get<AppService>(AppService);
+    expect(appService).toBeDefined();
+  });
 });
