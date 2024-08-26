@@ -3,20 +3,13 @@ import { MongoPrismaService } from './mongo-prisma.service';
 import { PrismaClient } from '@prisma/client';
 
 jest.mock('@prisma/client', () => {
+  const actualPrismaClient = jest.requireActual('@prisma/client');
   return {
+    ...actualPrismaClient,
     PrismaClient: jest.fn().mockImplementation(() => {
-      return {
-        someModel: {
-          findMany: jest.fn(),
-        },
-        $extends: jest.fn().mockImplementation((extension) => {
-          return {
-            query: {
-              $allOperations: extension.query.$allOperations,
-            },
-          };
-        }),
-      };
+      const instance = new actualPrismaClient.PrismaClient();
+      instance.$connect = jest.fn();
+      return instance;
     }),
   };
 });
@@ -32,15 +25,11 @@ describe('MongoPrismaService', () => {
 
     service = module.get<MongoPrismaService>(MongoPrismaService);
     prismaClientMock = new PrismaClient() as jest.Mocked<PrismaClient>;
+    service.prisma = prismaClientMock;
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('should call getConnection on module init', async () => {
-    const getConnectionSpy = jest.spyOn(service, 'getConnection');
+  it('should call $connect on onModuleInit', async () => {
     await service.onModuleInit();
-    expect(getConnectionSpy).toHaveBeenCalled();
+    expect(prismaClientMock.$connect).toHaveBeenCalled();
   });
 });
