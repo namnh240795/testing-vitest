@@ -30,7 +30,7 @@ jobs:
         run: echo "jsonSummary=$(cat coverage/coverage-final.json)" >> $GITHUB_ENV
 
       - name: Verify Code Coverage
-        uses: @namnh240795/verify-coverage-action@1.0.1
+        uses: namnh240795/verify-coverage-action@1.0.1
         with:
             threshhold: 90
             jsonSummary: ${{ steps.coverage.outputs.jsonSummary }}
