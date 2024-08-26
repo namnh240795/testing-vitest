@@ -1,22 +1,33 @@
-name: "Setup NPM cache"
+name: "Setup PNPM cache"
 
 description: "Cache Dependencies"
 runs:
   using: "composite"
   steps:
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: Install Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: 18
-        cache: "npm"
+        node-version: 20
 
-    - name: Cache NPM Dependencies
-      uses: actions/cache@v3
-      id: cache-primes
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
       with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+        version: 9.3.0
+        run_install: false
 
-    - name: Install Dependencies
-      run: npm install
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      run: pnpm install
       shell: bash
