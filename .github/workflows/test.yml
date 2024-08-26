@@ -1,0 +1,36 @@
+name: Lint Check
+
+on:
+  push:
+    branches:
+      - main
+# This is what will cancel the workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+    
+      - name: Move to backend project
+        run: cd backend-project/
+
+      - name: Setup Continuous integration
+        uses: ./.github/actions
+
+      - name: Lint Application
+        run: npm run test:cov
+
+      - name: Save Coverage To Outputs
+        id: coverage
+        run: echo "jsonSummary=$(cat coverage/coverage-final.json)" >> $GITHUB_ENV
+
+      - name: Verify Code Coverage
+        uses: namnh240795/verify-coverage-action@1.0.1
+        with:
+            threshhold: 90
+            jsonSummary: ${{ steps.coverage.outputs.jsonSummary }}
